@@ -27,7 +27,6 @@ namespace AutoEncoders.UI
             var network = new NeuralNetwork(new int[] { 3, 4, 5, 2 });
             //double[] bla = network.Predict(testVector);
             network.Train(testVector, testVector2);
-
         }
 
         private Bitmap BitmapFrom(byte[] bytes)

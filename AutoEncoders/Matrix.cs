@@ -51,6 +51,47 @@ namespace AutoEncoders
             return result;
         }
 
+        public static double[][] Multiply(double[][] matrix, double constant)
+        {
+            int rows = matrix.Length;
+            int columns = matrix[0].Length;
+
+            double[][] result = new double[rows][];
+
+            for (int i = 0; i < rows; i++)
+            {
+                result[i] = new double[columns];
+                for (int j = 0; j < columns; j++)
+                {                    
+                    result[i][j] = matrix[i][j] * constant;
+                }
+            }
+
+            return result;
+        }
+
+        public static double[][][] Multiply(double[][][] matrix, double constant)
+        {
+            int layers = matrix.Length;
+
+            double[][][] result = new double[layers][][];
+
+            for (int i = 0; i < layers; i++)
+            {
+                result[i] = new double[matrix[i].Length][];
+                for (int j = 0; j < matrix[i].Length; j++)
+                {
+                    result[i][j] = new double[matrix[i][j].Length];
+                    for (int k = 0; k < matrix[i][j].Length; k++)
+                    {
+                        result[i][j][k] = matrix[i][j][k] * constant;
+                    }
+                }
+            }
+
+            return result;
+        }
+
         public static double[][] Transpose(double[][] matrix)
         {
             int rows = matrix.Length;
@@ -113,6 +154,52 @@ namespace AutoEncoders
             for (int i = 0; i < firstVector.Length; i++)
             {
                 result[i] = firstVector[i] - secondVector[i];
+            }
+
+            return result;
+        }
+
+        public static double[][] Subtract(double[][] firstMatrix, double[][] secondMatrix)
+        {
+            Debug.Assert(firstMatrix.Length == secondMatrix.Length);
+            Debug.Assert(firstMatrix[0].Length == secondMatrix[0].Length);
+
+            int rows = firstMatrix.Length;
+            int columns = firstMatrix[0].Length;            
+
+            double[][] result = new double[rows][];
+
+            for (int i = 0; i < rows; i++)
+            {
+                result[i] = new double[columns];
+                for (int j = 0; j < columns; j++)
+                {
+                    result[i][j] = firstMatrix[i][j] - secondMatrix[i][j];
+                }
+            }
+
+            return result;
+        }
+
+        public static double[][][] Subtract(double[][][] firstMatrix, double[][][] secondMatrix)
+        {
+            Debug.Assert(firstMatrix.Length == secondMatrix.Length);
+
+            int layers = firstMatrix.Length;
+
+            double[][][] result = new double[layers][][];
+
+            for (int i = 0; i < layers; i++)
+            {
+                result[i] = new double[firstMatrix[i].Length][];
+                for (int j = 0; j < firstMatrix[i].Length; j++)
+                {
+                    result[i][j] = new double[firstMatrix[i][j].Length];
+                    for (int k = 0; k < firstMatrix[i][j].Length; k++)
+                    {
+                        result[i][j][k] = firstMatrix[i][j][k] - secondMatrix[i][j][k];
+                    }
+                }
             }
 
             return result;

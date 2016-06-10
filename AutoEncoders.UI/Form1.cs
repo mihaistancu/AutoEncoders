@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -13,7 +10,8 @@ namespace AutoEncoders.UI
     {
         public Form1()
         {
-            InitializeComponent();               
+            InitializeComponent();
+            var network = new NeuralNetwork(new int[] {3, 4, 2});
         }
 
         private Bitmap BitmapFrom(byte[] bytes)
@@ -31,7 +29,7 @@ namespace AutoEncoders.UI
             return bitmap;
         }
 
-        private void button1_Click(object sender, System.EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
             var mnistParser = new MnistImageCollection("MNIST\\train-images.idx3-ubyte");
             List<byte[]> images = mnistParser.GetImages();

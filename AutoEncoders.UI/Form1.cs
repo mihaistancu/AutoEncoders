@@ -27,7 +27,7 @@ namespace AutoEncoders.UI
 
             double[] result = Matrix.Multiply(testMatrix, testVector);
             double[] add = Matrix.Add(testVector, testVector2);
-
+            double[] sigmoid = Matrix.Sigmoid(testVector);
         }
 
         private Bitmap BitmapFrom(byte[] bytes)

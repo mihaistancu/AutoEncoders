@@ -63,5 +63,17 @@ namespace AutoEncoders
 
             return result;
         }
+
+        public static double[] Sigmoid(double[] vector)
+        {
+            double[] result = new double[vector.Length];
+
+            for (int i = 0; i < vector.Length; i++)
+            {
+                result[i] = 1/(1 + Math.Exp(-vector[i]));
+            }
+
+            return result;
+        }
     }
 }

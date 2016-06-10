@@ -1,14 +1,13 @@
-﻿using System.CodeDom;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace AutoEncoders
 {
     public class NeuralNetwork
     {
-        private List<double[][]> weightMatrices = new List<double[][]>();
-        private List<double[]> layerBiases = new List<double[]>();
-        private int layerCount;
+        private readonly List<double[][]> weightMatrices = new List<double[][]>();
+        private readonly List<double[]> layerBiases = new List<double[]>();
+        private readonly int layerCount;
 
         public NeuralNetwork(int[] layerSizes)
         {
@@ -37,8 +36,29 @@ namespace AutoEncoders
         public void Train(double[] input, double[] output)
         {
             double[][] activationLayers = FeedForward(input);
-
             double[][] layerErrors = GetLayerErrors(output, activationLayers);
+            
+            double[][][] weightGradient = GetWeightGradient(activationLayers, layerErrors);
+        }
+
+        private static double[][][] GetWeightGradient(double[][] activationLayers, double[][] layerErrors)
+        {
+            double[][][] weightGradient = new double[activationLayers.Length][][];
+
+            for (int l = 1; l < activationLayers.Length; l++)
+            {
+                weightGradient[l] = new double[activationLayers[l].Length][];
+                for (int j = 0; j < activationLayers[l].Length; j++)
+                {
+                    weightGradient[l][j] = new double[activationLayers[l-1].Length];
+                    for (int k = 0; k < activationLayers[l - 1].Length; k++)
+                    {
+                        weightGradient[l][j][k] = activationLayers[l - 1][k]*layerErrors[l][j];
+                    }
+                }
+            }
+
+            return weightGradient;
         }
 
         private double[][] GetLayerErrors(double[] output, double[][] activationLayers)

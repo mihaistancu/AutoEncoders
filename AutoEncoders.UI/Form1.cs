@@ -22,14 +22,12 @@ namespace AutoEncoders.UI
             };
 
             double[] testVector = {2, 4, 7};
-            double[] testVector2 = { 1, 2, 3 };
+            double[] testVector2 = { 1, 2 };
 
-            double[] result = Matrix.Multiply(testMatrix, testVector);
-            double[] add = Matrix.Add(testVector, testVector2);
-            double[] sigmoid = Matrix.Sigmoid(testVector);
+            var network = new NeuralNetwork(new int[] { 3, 4, 5, 2 });
+            //double[] bla = network.Predict(testVector);
+            network.Train(testVector, testVector2);
 
-            var network = new NeuralNetwork(new int[] { 3, 4, 2, 5 });
-            double[] bla = network.Predict(testVector);
         }
 
         private Bitmap BitmapFrom(byte[] bytes)

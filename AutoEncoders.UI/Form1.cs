@@ -29,7 +29,7 @@ namespace AutoEncoders.UI
             double[] sigmoid = Matrix.Sigmoid(testVector);
 
             var network = new NeuralNetwork(new int[] { 3, 4, 2, 5 });
-            double[] bla = network.FeedForward(testVector);
+            double[] bla = network.Predict(testVector);
         }
 
         private Bitmap BitmapFrom(byte[] bytes)

@@ -53,15 +53,14 @@ namespace AutoEncoders
 
         public static double[][] Multiply(double[][] matrix, double constant)
         {
-            int rows = matrix.Length;
-            int columns = matrix[0].Length;
+            int rows = matrix.Length;         
 
             double[][] result = new double[rows][];
 
             for (int i = 0; i < rows; i++)
             {
-                result[i] = new double[columns];
-                for (int j = 0; j < columns; j++)
+                result[i] = new double[matrix[i].Length];
+                for (int j = 0; j < matrix[i].Length; j++)
                 {                    
                     result[i][j] = matrix[i][j] * constant;
                 }
@@ -162,17 +161,15 @@ namespace AutoEncoders
         public static double[][] Subtract(double[][] firstMatrix, double[][] secondMatrix)
         {
             Debug.Assert(firstMatrix.Length == secondMatrix.Length);
-            Debug.Assert(firstMatrix[0].Length == secondMatrix[0].Length);
 
-            int rows = firstMatrix.Length;
-            int columns = firstMatrix[0].Length;            
+            int rows = firstMatrix.Length;        
 
             double[][] result = new double[rows][];
 
             for (int i = 0; i < rows; i++)
             {
-                result[i] = new double[columns];
-                for (int j = 0; j < columns; j++)
+                result[i] = new double[firstMatrix[i].Length];
+                for (int j = 0; j < firstMatrix[i].Length; j++)
                 {
                     result[i][j] = firstMatrix[i][j] - secondMatrix[i][j];
                 }

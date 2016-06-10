@@ -12,7 +12,7 @@ namespace AutoEncoders
         public NeuralNetwork(int[] layerSizes)
         {
             layerCount = layerSizes.Length;
-            learningRate = 1.0;
+            learningRate = 0.01;
 
             weightLayers = new double[layerCount][][];
             weightLayers[0] = new double[0][];

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -11,21 +12,70 @@ namespace AutoEncoders.UI
         public Form1()
         {
             InitializeComponent();            
+        }
 
-            double[][] testMatrix = 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var mnistImageParser = new MnistImageCollection("MNIST\\train-images.idx3-ubyte");
+            List<byte[]> images = mnistImageParser.GetImages();
+
+            var mnistLabelParser = new MnistLabelCollection("MNIST\\train-labels.idx1-ubyte");
+            List<byte> labels = mnistLabelParser.GetLabels();
+
+            var network = new NeuralNetwork(new int[] { 784, 30, 10 });
+
+            for (int epoch = 0; epoch < 10; epoch++)
             {
-                new double[] {1, 2, 3},
-                new double[] {4, 5, 6},
-                new double[] {0, 2, 3},
-                new double[] {8, 9, 0}
-            };
+                for (int i = 0; i < images.Count; i++)
+                {
+                    //digit.Image = BitmapFrom(images[i]);
+                    //digit.Refresh();
 
-            double[] testVector = {2, 4, 7};
-            double[] testVector2 = { 1, 2 };
+                    label1.Text = ((int) labels[i]).ToString() + "(" + i + ")";
+                    label1.Refresh();
 
-            var network = new NeuralNetwork(new int[] { 3, 4, 5, 2 });
-            //double[] bla = network.Predict(testVector);
-            network.Train(testVector, testVector2);
+                    network.Train(ConvertToInput(images[i]), ConvertToOutput(labels[i]));
+                }
+
+                label2.Text += "Accuracy epoch" + epoch + ":" + GetAccuracy(network) + Environment.NewLine;
+                label2.Refresh();
+            }
+        }
+
+        private double GetAccuracy(NeuralNetwork network)
+        {
+            var mnistImageParser = new MnistImageCollection("MNIST\\t10k-images.idx3-ubyte");
+            List<byte[]> images = mnistImageParser.GetImages();
+
+            var mnistLabelParser = new MnistLabelCollection("MNIST\\t10k-labels.idx1-ubyte");
+            List<byte> labels = mnistLabelParser.GetLabels();
+
+            int success = 0;
+
+            for (int i = 0; i < images.Count; i++)
+            {
+                double[] output = network.Predict(ConvertToInput(images[i]));
+                int predictedDigit = Array.IndexOf(output, output.Max());
+                int actualDigit = labels[i];
+
+                if (predictedDigit == actualDigit)
+                {
+                    success++;
+                }
+            }
+
+            return (double) success/images.Count;
+        }
+
+        private double[] ConvertToInput(byte[] image)
+        {
+            return image.Select(x => (double)x).ToArray();
+        }
+
+        private double[] ConvertToOutput(byte label)
+        {
+            return Enumerable.Range(0, 10)
+                .Select(x => x == label ? 1.0 : 0.0).ToArray();
         }
 
         private Bitmap BitmapFrom(byte[] bytes)
@@ -41,25 +91,6 @@ namespace AutoEncoders.UI
             }
 
             return bitmap;
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            var mnistImageParser = new MnistImageCollection("MNIST\\train-images.idx3-ubyte");
-            List<byte[]> images = mnistImageParser.GetImages();
-
-            var mnistLabelParser = new MnistLabelCollection("MNIST\\train-labels.idx1-ubyte");
-            List<byte> labels = mnistLabelParser.GetLabels();
-
-            for (int i = 0; i < images.Count; i++)
-            {
-                digit.Image = BitmapFrom(images[i]);
-                digit.Refresh();
-
-                label1.Text = ((int) labels[i]).ToString();
-                label1.Refresh();
-                Thread.Sleep(2000);
-            }            
         }
     }
 }

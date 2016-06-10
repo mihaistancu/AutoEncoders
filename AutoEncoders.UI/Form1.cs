@@ -23,8 +23,11 @@ namespace AutoEncoders.UI
             };
 
             double[] testVector = {2, 4, 7};
+            double[] testVector2 = { 1, 2, 3 };
 
             double[] result = Matrix.Multiply(testMatrix, testVector);
+            double[] add = Matrix.Add(testVector, testVector2);
+
         }
 
         private Bitmap BitmapFrom(byte[] bytes)

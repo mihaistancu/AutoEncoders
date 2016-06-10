@@ -49,5 +49,19 @@ namespace AutoEncoders
 
             return result;
         }
+
+        public static double[] Add(double[] firstVector, double[] secondVector)
+        {
+            Debug.Assert(firstVector.Length == secondVector.Length);
+
+            double[] result = new double[firstVector.Length];
+
+            for (int i = 0; i < firstVector.Length; i++)
+            {
+                result[i] = firstVector[i] + secondVector[i];
+            }
+
+            return result;
+        }
     }
 }

@@ -21,7 +21,7 @@ namespace AutoEncoders
         }
 
         public double[] FeedForward(double[] input)
-        {
+        {            
             return null;
         }
 

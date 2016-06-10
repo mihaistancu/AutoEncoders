@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -12,6 +13,18 @@ namespace AutoEncoders.UI
         {
             InitializeComponent();
             var network = new NeuralNetwork(new int[] {3, 4, 2});
+
+            double[][] testMatrix = 
+            {
+                new double[] {1, 2, 3},
+                new double[] {4, 5, 6},
+                new double[] {0, 2, 3},
+                new double[] {8, 9, 0}
+            };
+
+            double[] testVector = {2, 4, 7};
+
+            double[] result = Matrix.Multiply(testMatrix, testVector);
         }
 
         private Bitmap BitmapFrom(byte[] bytes)

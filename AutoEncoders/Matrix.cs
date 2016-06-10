@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace AutoEncoders
 {
-    class Matrix
+    public class Matrix
     {
         public static double[][] CreateRandom(int rows, int columns)
         {
@@ -27,6 +28,26 @@ namespace AutoEncoders
             }
 
             return randomArray;
+        }
+
+        public static double[] Multiply(double[][] matrix, double[] vector)
+        {
+            int rows = matrix.Length;
+            int columns = matrix[0].Length;
+            
+            Debug.Assert(columns == vector.Length);
+
+            double[] result = new double[rows];
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    result[i] += matrix[i][j]*vector[j];
+                }
+            }
+
+            return result;
         }
     }
 }

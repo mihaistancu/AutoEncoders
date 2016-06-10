@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -46,15 +45,21 @@ namespace AutoEncoders.UI
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var mnistParser = new MnistImageCollection("MNIST\\train-images.idx3-ubyte");
-            List<byte[]> images = mnistParser.GetImages();
+            var mnistImageParser = new MnistImageCollection("MNIST\\train-images.idx3-ubyte");
+            List<byte[]> images = mnistImageParser.GetImages();
 
-            foreach (byte[] image in images)
+            var mnistLabelParser = new MnistLabelCollection("MNIST\\train-labels.idx1-ubyte");
+            List<byte> labels = mnistLabelParser.GetLabels();
+
+            for (int i = 0; i < images.Count; i++)
             {
-                digit.Image = BitmapFrom(image);
+                digit.Image = BitmapFrom(images[i]);
                 digit.Refresh();
+
+                label1.Text = ((int) labels[i]).ToString();
+                label1.Refresh();
                 Thread.Sleep(2000);
-            }         
+            }            
         }
     }
 }

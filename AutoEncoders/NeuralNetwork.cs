@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace AutoEncoders
 {
     public class NeuralNetwork
     {
-        private List<double[][]> weightMatrices = new List<double[][]>();                   
+        private List<double[][]> weightMatrices = new List<double[][]>();
         private List<double[]> layerBiases = new List<double[]>();
 
         public NeuralNetwork(int[] layerSizes)
@@ -21,8 +20,19 @@ namespace AutoEncoders
         }
 
         public double[] FeedForward(double[] input)
-        {            
-            return null;
+        {    
+            double[] activations = input;
+
+            for (int i = 0; i < weightMatrices.Count; i++)
+            {
+                activations = Matrix.Sigmoid(
+                    Matrix.Add(
+                        Matrix.Multiply(weightMatrices[i], activations),
+                        layerBiases[i])
+                    );
+            }
+
+            return activations;
         }
 
         public void Train(double[] input, double[] output)

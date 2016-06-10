@@ -11,8 +11,7 @@ namespace AutoEncoders.UI
     {
         public Form1()
         {
-            InitializeComponent();
-            var network = new NeuralNetwork(new int[] {3, 4, 2});
+            InitializeComponent();            
 
             double[][] testMatrix = 
             {
@@ -28,6 +27,9 @@ namespace AutoEncoders.UI
             double[] result = Matrix.Multiply(testMatrix, testVector);
             double[] add = Matrix.Add(testVector, testVector2);
             double[] sigmoid = Matrix.Sigmoid(testVector);
+
+            var network = new NeuralNetwork(new int[] { 3, 4, 2, 5 });
+            double[] bla = network.FeedForward(testVector);
         }
 
         private Bitmap BitmapFrom(byte[] bytes)

@@ -10,13 +10,13 @@ namespace AutoEncoders
 
             for (int i = 0; i < rows; i++)
             {
-                matrix[i] = CreateRandomArray(columns);
+                matrix[i] = CreateRandomVector(columns);
             }
 
             return matrix;
         }
 
-        private static double[] CreateRandomArray(int arraySize)
+        public static double[] CreateRandomVector(int arraySize)
         {
             double[] randomArray = new double[arraySize];
 

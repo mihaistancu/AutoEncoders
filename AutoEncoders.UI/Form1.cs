@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace AutoEncoders.UI
@@ -14,7 +13,35 @@ namespace AutoEncoders.UI
     {
         public Form1()
         {
-            InitializeComponent();
+            InitializeComponent();               
+        }
+
+        private Bitmap BitmapFrom(byte[] bytes)
+        {
+            var bitmap = new Bitmap(28, 28);
+            for (int i = 0; i < 28; i++)
+            {
+                for (int j = 0; j < 28; j++)
+                {
+                    byte colorSample = bytes[j * 28 + i];
+                    bitmap.SetPixel(i, j, Color.FromArgb(255, colorSample, colorSample, colorSample));
+                }
+            }
+
+            return bitmap;
+        }
+
+        private void button1_Click(object sender, System.EventArgs e)
+        {
+            var mnistParser = new MnistImageCollection("MNIST\\train-images.idx3-ubyte");
+            List<byte[]> images = mnistParser.GetImages();
+
+            foreach (byte[] image in images)
+            {
+                digit.Image = BitmapFrom(image);
+                digit.Refresh();
+                Thread.Sleep(2000);
+            }         
         }
     }
 }

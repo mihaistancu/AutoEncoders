@@ -28,12 +28,48 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.digit = new System.Windows.Forms.PictureBox();
+            this.button1 = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.digit)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // digit
+            // 
+            this.digit.Location = new System.Drawing.Point(311, 176);
+            this.digit.Name = "digit";
+            this.digit.Size = new System.Drawing.Size(150, 150);
+            this.digit.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.digit.TabIndex = 0;
+            this.digit.TabStop = false;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(349, 347);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // Form1
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(778, 510);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.digit);
+            this.Name = "Form1";
             this.Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)(this.digit)).EndInit();
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private System.Windows.Forms.PictureBox digit;
+        private System.Windows.Forms.Button button1;
     }
 }
 

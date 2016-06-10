@@ -25,11 +25,7 @@ namespace AutoEncoders
 
             for (int i = 0; i < weightMatrices.Count; i++)
             {
-                activations = Matrix.Sigmoid(
-                    Matrix.Add(
-                        Matrix.Multiply(weightMatrices[i], activations),
-                        layerBiases[i])
-                    );
+                activations = GetActivations(weightMatrices[i], layerBiases[i], activations);
             }
 
             return activations;
@@ -37,7 +33,16 @@ namespace AutoEncoders
 
         public void Train(double[] input, double[] output)
         {
+            
+        }
 
+        private static double[] GetActivations(double[][] weight, double[] layerBias, double[] input)
+        {
+            return Matrix.Sigmoid(
+                Matrix.Add(
+                    Matrix.Multiply(weight, input),
+                    layerBias)
+                );
         }
     }
 }

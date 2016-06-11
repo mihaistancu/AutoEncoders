@@ -25,7 +25,7 @@ namespace AutoEncoders
             var random = new Random(DateTime.Now.Millisecond);
             for (int i = 0; i < arraySize; i++)
             {
-                randomArray[i] = random.NextDouble();
+                randomArray[i] = random.NextDouble() - .5;
             }
 
             return randomArray;

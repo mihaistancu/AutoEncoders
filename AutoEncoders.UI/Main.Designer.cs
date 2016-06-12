@@ -32,9 +32,14 @@
             this.Progress = new System.Windows.Forms.Label();
             this.Accuracy = new System.Windows.Forms.Label();
             this.OpenNetwork = new System.Windows.Forms.Button();
-            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.openNetworkDialog = new System.Windows.Forms.OpenFileDialog();
             this.TestAccuracy = new System.Windows.Forms.Button();
             this.SaveNetwork = new System.Windows.Forms.Button();
+            this.OpenImage = new System.Windows.Forms.Button();
+            this.Digit = new System.Windows.Forms.PictureBox();
+            this.Prediction = new System.Windows.Forms.Label();
+            this.openImageDialog = new System.Windows.Forms.OpenFileDialog();
+            ((System.ComponentModel.ISupportInitialize)(this.Digit)).BeginInit();
             this.SuspendLayout();
             // 
             // StartTraining
@@ -75,9 +80,9 @@
             this.OpenNetwork.UseVisualStyleBackColor = true;
             this.OpenNetwork.Click += new System.EventHandler(this.OnOpenNetwork);
             // 
-            // openFileDialog
+            // openNetworkDialog
             // 
-            this.openFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.OnOpenFileDialogFileOk);
+            this.openNetworkDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.OnOpenNetworkDialogFileOk);
             // 
             // TestAccuracy
             // 
@@ -99,11 +104,47 @@
             this.SaveNetwork.UseVisualStyleBackColor = true;
             this.SaveNetwork.Click += new System.EventHandler(this.OnSaveNetwork);
             // 
+            // OpenImage
+            // 
+            this.OpenImage.Location = new System.Drawing.Point(12, 134);
+            this.OpenImage.Name = "OpenImage";
+            this.OpenImage.Size = new System.Drawing.Size(115, 45);
+            this.OpenImage.TabIndex = 7;
+            this.OpenImage.Text = "Open Image";
+            this.OpenImage.UseVisualStyleBackColor = true;
+            this.OpenImage.Click += new System.EventHandler(this.OnOpenImage);
+            // 
+            // Digit
+            // 
+            this.Digit.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.Digit.Location = new System.Drawing.Point(357, 23);
+            this.Digit.Name = "Digit";
+            this.Digit.Size = new System.Drawing.Size(100, 100);
+            this.Digit.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.Digit.TabIndex = 8;
+            this.Digit.TabStop = false;
+            // 
+            // Prediction
+            // 
+            this.Prediction.AutoSize = true;
+            this.Prediction.Location = new System.Drawing.Point(496, 72);
+            this.Prediction.Name = "Prediction";
+            this.Prediction.Size = new System.Drawing.Size(71, 17);
+            this.Prediction.TabIndex = 10;
+            this.Prediction.Text = "Prediction";
+            // 
+            // openImageDialog
+            // 
+            this.openImageDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.OnOpenImageDialogFileOk);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(778, 510);
+            this.Controls.Add(this.Prediction);
+            this.Controls.Add(this.Digit);
+            this.Controls.Add(this.OpenImage);
             this.Controls.Add(this.SaveNetwork);
             this.Controls.Add(this.TestAccuracy);
             this.Controls.Add(this.OpenNetwork);
@@ -112,6 +153,7 @@
             this.Controls.Add(this.StartTraining);
             this.Name = "Main";
             this.Text = "AutoEncoders";
+            ((System.ComponentModel.ISupportInitialize)(this.Digit)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -123,9 +165,13 @@
         private System.Windows.Forms.Label Progress;
         private System.Windows.Forms.Label Accuracy;
         private System.Windows.Forms.Button OpenNetwork;
-        private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.OpenFileDialog openNetworkDialog;
         private System.Windows.Forms.Button TestAccuracy;
         private System.Windows.Forms.Button SaveNetwork;
+        private System.Windows.Forms.Button OpenImage;
+        private System.Windows.Forms.PictureBox Digit;
+        private System.Windows.Forms.Label Prediction;
+        private System.Windows.Forms.OpenFileDialog openImageDialog;
     }
 }
 

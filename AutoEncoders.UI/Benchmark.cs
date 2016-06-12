@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using AutoEncoders.UI.Data;
 
@@ -15,12 +14,7 @@ namespace AutoEncoders.UI
 
         private bool Match(double[] predicted, double[] actual)
         {
-            return MaxIndex(predicted) == MaxIndex(actual);
-        }
-
-        private int MaxIndex(double[] vector)
-        {
-            return Array.IndexOf(vector, vector.Max());
+            return predicted.MaxIndex() == actual.MaxIndex();
         }
     }
 }

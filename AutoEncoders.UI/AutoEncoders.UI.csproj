@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArrayExtensions.cs" />
     <Compile Include="Benchmark.cs" />
     <Compile Include="Data\MnistReader.cs" />
     <Compile Include="Main.cs">

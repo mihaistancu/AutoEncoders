@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using AutoEncoders.UI.Data;
 
@@ -58,13 +60,13 @@ namespace AutoEncoders.UI
 
         private void OnOpenNetwork(object sender, EventArgs e)
         {
-            openFileDialog.ShowDialog();
+            openNetworkDialog.ShowDialog();
         }
 
-        private void OnOpenFileDialogFileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        private void OnOpenNetworkDialogFileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
             var serializer = new NeuralNetworkSerializer();
-            network = serializer.Load(openFileDialog.FileName);
+            network = serializer.Load(openNetworkDialog.FileName);
         }
 
         private void OnTestAccuracy(object sender, EventArgs e)
@@ -76,9 +78,55 @@ namespace AutoEncoders.UI
         private void OnSaveNetwork(object sender, EventArgs e)
         {
             double accuracy = benchmark.GetAccuracy(network, testSet);
-            
             var serializer = new NeuralNetworkSerializer();
             serializer.Save(network, accuracy.ToString());
+        }
+
+        private void OnOpenImage(object sender, EventArgs e)
+        {
+            openImageDialog.ShowDialog();
+        }
+
+        private void OnOpenImageDialogFileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var image = Image.FromFile(openImageDialog.FileName);
+            byte[] bytes = ImageToBytes(image);
+            Bitmap bitmap = BitmapFrom(bytes);
+            Digit.Image = bitmap;
+
+            var input = bytes.Select(x => (double) x).ToArray();
+            double[] output = network.Predict(input);
+            Prediction.Text = output.MaxIndex().ToString();
+        }
+
+        private byte[] ImageToBytes(Image image)
+        {
+            var bitmap = new Bitmap(image);
+            
+            var result = new byte[784];
+
+            for (int i=0;i<28;i++)
+                for (int j = 0; j < 28; j++)
+                {
+                    result[j*28 + i] = bitmap.GetPixel(i, j).G;
+                }
+
+            return result;
+        }
+
+        private Bitmap BitmapFrom(byte[] bytes)
+        {
+            var bitmap = new Bitmap(28, 28);
+            for (int i = 0; i < 28; i++)
+            {
+                for (int j = 0; j < 28; j++)
+                {
+                    byte colorSample = bytes[j * 28 + i];
+                    bitmap.SetPixel(i, j, Color.FromArgb(255, colorSample, colorSample, colorSample));
+                }
+            }
+
+            return bitmap;
         }
     }
 }

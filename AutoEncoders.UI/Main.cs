@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 using AutoEncoders.UI.Data;
 
@@ -20,10 +19,11 @@ namespace AutoEncoders.UI
             List<TrainingRecord> testSet = reader.GetTrainingSet("MNIST\\t10k-images.idx3-ubyte", "MNIST\\t10k-labels.idx1-ubyte");
             
             var network = new NeuralNetwork(new [] { 784, 30, 10 });
+            var benchmark = new Benchmark();
 
             for (double accuracy = 0; accuracy < .9;)
             {
-                accuracy = GetAccuracy(network, testSet);
+                accuracy = benchmark.GetAccuracy(network, testSet);
                 UpdateAccuracy(accuracy);
 
                 Train(network, trainingSet);
@@ -49,18 +49,6 @@ namespace AutoEncoders.UI
         {
             Accuracy.Text += "Accuracy: " + accuracy;
             Accuracy.Refresh();
-        }
-
-        private double GetAccuracy(NeuralNetwork network, List<TrainingRecord> testSet)
-        {
-            int success = testSet.Count(t => Match(network.Predict(t.Input), t.Output));
-            return (double) success/testSet.Count;
-        }
-
-        private bool Match(double[] predicted, double[] actual)
-        {
-            return Array.IndexOf(predicted, predicted.Max()) ==
-                   Array.IndexOf(actual, actual.Max());
         }
     }
 }

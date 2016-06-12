@@ -22,6 +22,16 @@ namespace AutoEncoders.UI
             var mnistLabelParser = new MnistLabelCollection("MNIST\\train-labels.idx1-ubyte");
             List<byte> labels = mnistLabelParser.GetLabels();
 
+            List<TrainingRecord> trainingSet = new List<TrainingRecord>();
+            for (int i = 0; i < images.Count; i++)
+            {
+                trainingSet.Add(new TrainingRecord
+                {
+                    Input = ConvertToInput(images[i]),
+                    Output =  ConvertToOutput(labels[i])
+                });
+            }
+
             var network = new NeuralNetwork(new int[] { 784, 30, 10 });
 
             for (int epoch = 0; epoch < 10; epoch++)
@@ -34,7 +44,7 @@ namespace AutoEncoders.UI
                     label1.Text = ((int) labels[i]).ToString() + "(" + i + ")";
                     label1.Refresh();
 
-                    network.Train(ConvertToInput(images[i]), ConvertToOutput(labels[i]));
+                    network.Train(trainingSet[i].Input, trainingSet[i].Output);
                 }
 
                 label2.Text += "Accuracy epoch" + epoch + ":" + GetAccuracy(network) + Environment.NewLine;
@@ -91,6 +101,12 @@ namespace AutoEncoders.UI
             }
 
             return bitmap;
+        }
+
+        public class TrainingRecord
+        {
+            public double[] Input;
+            public double[] Output;
         }
     }
 }

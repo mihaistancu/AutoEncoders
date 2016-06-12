@@ -13,7 +13,7 @@ namespace AutoEncoders.UI
             InitializeComponent();            
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void OnStartTraining(object sender, EventArgs e)
         {
             var reader = new MnistReader();
             List<TrainingRecord> trainingSet = reader.GetTrainingSet("MNIST\\train-images.idx3-ubyte", "MNIST\\train-labels.idx1-ubyte");
@@ -21,23 +21,35 @@ namespace AutoEncoders.UI
             
             var network = new NeuralNetwork(new [] { 784, 30, 10 });
 
-            for (int epoch = 0; epoch < 10; epoch++)
+            for (double accuracy = 0; accuracy < .9;)
             {
-                for (int i = 0; i < trainingSet.Count; i++)
-                {
-                    Update(label1, i.ToString());
+                accuracy = GetAccuracy(network, testSet);
+                UpdateAccuracy(accuracy);
 
-                    network.Train(trainingSet[i].Input, trainingSet[i].Output);
-                }
-
-                Update(label2, "Accuracy epoch" + epoch + ":" + GetAccuracy(network, testSet) + Environment.NewLine);
+                Train(network, trainingSet);
             }
         }
 
-        private void Update(Label label, string text)
+        private void Train(NeuralNetwork network, List<TrainingRecord> trainingSet)
         {
-            label.Text = text;
-            label.Refresh();
+            for (int i = 0; i < trainingSet.Count; i++)
+            {
+                UpdateProgress(i);
+
+                network.Train(trainingSet[i].Input, trainingSet[i].Output);
+            }
+        }
+
+        private void UpdateProgress(int progress)
+        {
+            Progress.Text = progress.ToString();
+            Progress.Refresh();
+        }
+
+        private void UpdateAccuracy(double accuracy)
+        {
+            Accuracy.Text += "Accuracy: " + accuracy;
+            Accuracy.Refresh();
         }
 
         private double GetAccuracy(NeuralNetwork network, List<TrainingRecord> testSet)

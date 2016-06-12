@@ -50,8 +50,8 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="MnistImageCollection.cs" />
-    <Compile Include="MnistLabelCollection.cs" />
+    <Compile Include="Data\MnistImageCollection.cs" />
+    <Compile Include="Data\MnistLabelCollection.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

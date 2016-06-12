@@ -56,16 +56,7 @@ namespace AutoEncoders.UI
 
         private double GetAccuracy(NeuralNetwork network, List<TrainingRecord> testSet)
         {
-            int success = 0;
-
-            for (int i = 0; i < testSet.Count; i++)
-            {
-                if (Match(network.Predict(testSet[i].Input), testSet[i].Output))
-                {
-                    success++;
-                }
-            }
-
+            int success = testSet.Count(t => Match(network.Predict(t.Input), t.Output));
             return (double) success/testSet.Count;
         }
 

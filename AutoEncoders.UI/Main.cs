@@ -6,9 +6,9 @@ using AutoEncoders.UI.Data;
 
 namespace AutoEncoders.UI
 {
-    public partial class Form1 : Form
+    public partial class Main : Form
     {
-        public Form1()
+        public Main()
         {
             InitializeComponent();            
         }
@@ -35,7 +35,6 @@ namespace AutoEncoders.UI
             for (int i = 0; i < trainingSet.Count; i++)
             {
                 UpdateProgress(i);
-
                 network.Train(trainingSet[i].Input, trainingSet[i].Output);
             }
         }

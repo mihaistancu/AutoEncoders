@@ -1,6 +1,6 @@
 ﻿namespace AutoEncoders.UI
 {
-    partial class Form1
+    partial class Main
     {
         /// <summary>
         /// Required designer variable.
@@ -61,7 +61,7 @@
             this.Accuracy.TabIndex = 3;
             this.Accuracy.Text = "Accuracy";
             // 
-            // Form1
+            // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -69,8 +69,8 @@
             this.Controls.Add(this.Accuracy);
             this.Controls.Add(this.Progress);
             this.Controls.Add(this.StartTraining);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "Main";
+            this.Text = "AutoEncoders";
             this.ResumeLayout(false);
             this.PerformLayout();
 

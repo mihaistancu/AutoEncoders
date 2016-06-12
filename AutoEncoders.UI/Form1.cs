@@ -25,15 +25,19 @@ namespace AutoEncoders.UI
             {
                 for (int i = 0; i < trainingSet.Count; i++)
                 {
-                    label1.Text = i.ToString();
-                    label1.Refresh();
+                    Update(label1, i.ToString());
 
                     network.Train(trainingSet[i].Input, trainingSet[i].Output);
                 }
 
-                label2.Text += "Accuracy epoch" + epoch + ":" + GetAccuracy(network, testSet) + Environment.NewLine;
-                label2.Refresh();
+                Update(label2, "Accuracy epoch" + epoch + ":" + GetAccuracy(network, testSet) + Environment.NewLine);
             }
+        }
+
+        private void Update(Label label, string text)
+        {
+            label.Text = text;
+            label.Refresh();
         }
 
         private double GetAccuracy(NeuralNetwork network, List<TrainingRecord> testSet)
@@ -46,17 +50,6 @@ namespace AutoEncoders.UI
         {
             return Array.IndexOf(predicted, predicted.Max()) ==
                    Array.IndexOf(actual, actual.Max());
-        }
-
-        private double[] ConvertToInput(byte[] image)
-        {
-            return image.Select(x => (double)x).ToArray();
-        }
-
-        private double[] ConvertToOutput(byte label)
-        {
-            return Enumerable.Range(0, 10)
-                .Select(x => x == label ? 1.0 : 0.0).ToArray();
         }
     }
 }

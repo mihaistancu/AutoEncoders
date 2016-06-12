@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace AutoEncoders.UI
@@ -16,6 +14,26 @@ namespace AutoEncoders.UI
 
         private void button1_Click(object sender, EventArgs e)
         {
+            List<TrainingRecord> trainingSet = GetTrainingSet();
+            var network = new NeuralNetwork(new [] { 784, 30, 10 });
+
+            for (int epoch = 0; epoch < 10; epoch++)
+            {
+                for (int i = 0; i < trainingSet.Count; i++)
+                {
+                    label1.Text = i.ToString();
+                    label1.Refresh();
+
+                    network.Train(trainingSet[i].Input, trainingSet[i].Output);
+                }
+
+                label2.Text += "Accuracy epoch" + epoch + ":" + GetAccuracy(network) + Environment.NewLine;
+                label2.Refresh();
+            }
+        }
+
+        private List<TrainingRecord> GetTrainingSet()
+        {
             var mnistImageParser = new MnistImageCollection("MNIST\\train-images.idx3-ubyte");
             List<byte[]> images = mnistImageParser.GetImages();
 
@@ -28,28 +46,10 @@ namespace AutoEncoders.UI
                 trainingSet.Add(new TrainingRecord
                 {
                     Input = ConvertToInput(images[i]),
-                    Output =  ConvertToOutput(labels[i])
+                    Output = ConvertToOutput(labels[i])
                 });
             }
-
-            var network = new NeuralNetwork(new int[] { 784, 30, 10 });
-
-            for (int epoch = 0; epoch < 10; epoch++)
-            {
-                for (int i = 0; i < images.Count; i++)
-                {
-                    //digit.Image = BitmapFrom(images[i]);
-                    //digit.Refresh();
-
-                    label1.Text = ((int) labels[i]).ToString() + "(" + i + ")";
-                    label1.Refresh();
-
-                    network.Train(trainingSet[i].Input, trainingSet[i].Output);
-                }
-
-                label2.Text += "Accuracy epoch" + epoch + ":" + GetAccuracy(network) + Environment.NewLine;
-                label2.Refresh();
-            }
+            return trainingSet;
         }
 
         private double GetAccuracy(NeuralNetwork network)
@@ -86,21 +86,6 @@ namespace AutoEncoders.UI
         {
             return Enumerable.Range(0, 10)
                 .Select(x => x == label ? 1.0 : 0.0).ToArray();
-        }
-
-        private Bitmap BitmapFrom(byte[] bytes)
-        {
-            var bitmap = new Bitmap(28, 28);
-            for (int i = 0; i < 28; i++)
-            {
-                for (int j = 0; j < 28; j++)
-                {
-                    byte colorSample = bytes[j * 28 + i];
-                    bitmap.SetPixel(i, j, Color.FromArgb(255, colorSample, colorSample, colorSample));
-                }
-            }
-
-            return bitmap;
         }
 
         public class TrainingRecord

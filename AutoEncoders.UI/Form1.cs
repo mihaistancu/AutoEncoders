@@ -14,7 +14,7 @@ namespace AutoEncoders.UI
 
         private void button1_Click(object sender, EventArgs e)
         {
-            List<TrainingRecord> trainingSet = GetTrainingSet();
+            List<TrainingRecord> trainingSet = GetTrainingSet("MNIST\\train-images.idx3-ubyte", "MNIST\\train-labels.idx1-ubyte");
             var network = new NeuralNetwork(new [] { 784, 30, 10 });
 
             for (int epoch = 0; epoch < 10; epoch++)
@@ -32,12 +32,12 @@ namespace AutoEncoders.UI
             }
         }
 
-        private List<TrainingRecord> GetTrainingSet()
+        private List<TrainingRecord> GetTrainingSet(string inputFile, string outputFile)
         {
-            var mnistImageParser = new MnistImageCollection("MNIST\\train-images.idx3-ubyte");
+            var mnistImageParser = new MnistImageCollection(inputFile);
             List<byte[]> images = mnistImageParser.GetImages();
 
-            var mnistLabelParser = new MnistLabelCollection("MNIST\\train-labels.idx1-ubyte");
+            var mnistLabelParser = new MnistLabelCollection(outputFile);
             List<byte> labels = mnistLabelParser.GetLabels();
 
             List<TrainingRecord> trainingSet = new List<TrainingRecord>();

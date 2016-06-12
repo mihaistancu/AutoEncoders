@@ -1,32 +1,38 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace AutoEncoders
 {
+    [Serializable]
     public class NeuralNetwork
     {
-        private double[][][] weightLayers;
-        private double[][] biasLayers;
-        private readonly int layerCount;
-        private readonly double learningRate;
+        public double[][][] Weights;
+        public double[][] Biases;
+        public int layerCount;
+        public double learningRate;
+
+        public NeuralNetwork()
+        {   
+        }
 
         public NeuralNetwork(int[] layerSizes)
         {
             layerCount = layerSizes.Length;
             learningRate = 0.01;
 
-            weightLayers = new double[layerCount][][];
-            weightLayers[0] = new double[0][];
+            Weights = new double[layerCount][][];
+            Weights[0] = new double[0][];
             
-            biasLayers = new double[layerCount][];
-            biasLayers[0] = new double[0];
+            Biases = new double[layerCount][];
+            Biases[0] = new double[0];
 
             for (int i = 1; i < layerCount; i++)
             {
                 int currentLayerSize = layerSizes[i];
                 int previousLayerSize = layerSizes[i - 1];
 
-                weightLayers[i] = Matrix.CreateRandom(currentLayerSize, previousLayerSize);
-                biasLayers[i] = Matrix.CreateRandomVector(currentLayerSize);
+                Weights[i] = Matrix.CreateRandom(currentLayerSize, previousLayerSize);
+                Biases[i] = Matrix.CreateRandomVector(currentLayerSize);
             }
         }
 
@@ -49,14 +55,14 @@ namespace AutoEncoders
 
         private void UpdateNetwork(double[][] biasGradient, double[][][] weightGradient)
         {
-            biasLayers = Matrix.Subtract(
-                biasLayers,
+            Biases = Matrix.Subtract(
+                Biases,
                 Matrix.Multiply(
                     biasGradient,
                     learningRate));
 
-            weightLayers = Matrix.Subtract(
-                weightLayers,
+            Weights = Matrix.Subtract(
+                Weights,
                 Matrix.Multiply(
                     weightGradient,
                     learningRate));
@@ -91,7 +97,7 @@ namespace AutoEncoders
 
             for (int l = layerCount - 2; l > 0; l--)
             {
-                double[] factor = Matrix.Multiply(Matrix.Transpose(weightLayers[l + 1]), layerErros[l + 1]);
+                double[] factor = Matrix.Multiply(Matrix.Transpose(Weights[l + 1]), layerErros[l + 1]);
                 double[] sigmaDerivative = GetSigmaDerivativeFor(activationLayers[l]);
 
                 layerErros[l] = Matrix.Multiply(factor, sigmaDerivative);
@@ -124,7 +130,7 @@ namespace AutoEncoders
 
             for (int i = 1; i < layerCount; i++)
             {
-                activations[i] = GetActivations(weightLayers[i], biasLayers[i], activations[i - 1]);
+                activations[i] = GetActivations(Weights[i], Biases[i], activations[i - 1]);
             }
 
             return activations;

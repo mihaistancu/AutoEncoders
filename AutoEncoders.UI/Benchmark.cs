@@ -15,8 +15,12 @@ namespace AutoEncoders.UI
 
         private bool Match(double[] predicted, double[] actual)
         {
-            return Array.IndexOf(predicted, predicted.Max()) ==
-                   Array.IndexOf(actual, actual.Max());
+            return MaxIndex(predicted) == MaxIndex(actual);
+        }
+
+        private int MaxIndex(double[] vector)
+        {
+            return Array.IndexOf(vector, vector.Max());
         }
     }
 }

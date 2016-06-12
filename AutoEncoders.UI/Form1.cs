@@ -15,6 +15,8 @@ namespace AutoEncoders.UI
         private void button1_Click(object sender, EventArgs e)
         {
             List<TrainingRecord> trainingSet = GetTrainingSet("MNIST\\train-images.idx3-ubyte", "MNIST\\train-labels.idx1-ubyte");
+            List<TrainingRecord> testSet = GetTrainingSet("MNIST\\t10k-images.idx3-ubyte", "MNIST\\t10k-labels.idx1-ubyte");
+            
             var network = new NeuralNetwork(new [] { 784, 30, 10 });
 
             for (int epoch = 0; epoch < 10; epoch++)
@@ -27,7 +29,7 @@ namespace AutoEncoders.UI
                     network.Train(trainingSet[i].Input, trainingSet[i].Output);
                 }
 
-                label2.Text += "Accuracy epoch" + epoch + ":" + GetAccuracy(network) + Environment.NewLine;
+                label2.Text += "Accuracy epoch" + epoch + ":" + GetAccuracy(network, testSet) + Environment.NewLine;
                 label2.Refresh();
             }
         }
@@ -52,24 +54,25 @@ namespace AutoEncoders.UI
             return trainingSet;
         }
 
-        private double GetAccuracy(NeuralNetwork network)
+        private double GetAccuracy(NeuralNetwork network, List<TrainingRecord> testSet)
         {
-            List<TrainingRecord> testSet = GetTrainingSet("MNIST\\t10k-images.idx3-ubyte", "MNIST\\t10k-labels.idx1-ubyte");
             int success = 0;
 
             for (int i = 0; i < testSet.Count; i++)
             {
-                double[] output = network.Predict(testSet[i].Input);
-                int predictedDigit = Array.IndexOf(output, output.Max());
-                int actualDigit = Array.IndexOf(testSet[i].Output, testSet[i].Output.Max());
-
-                if (predictedDigit == actualDigit)
+                if (Match(network.Predict(testSet[i].Input), testSet[i].Output))
                 {
                     success++;
                 }
             }
 
             return (double) success/testSet.Count;
+        }
+
+        private bool Match(double[] predicted, double[] actual)
+        {
+            return Array.IndexOf(predicted, predicted.Max()) ==
+                   Array.IndexOf(actual, actual.Max());
         }
 
         private double[] ConvertToInput(byte[] image)

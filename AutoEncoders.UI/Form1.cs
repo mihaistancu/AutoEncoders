@@ -54,19 +54,14 @@ namespace AutoEncoders.UI
 
         private double GetAccuracy(NeuralNetwork network)
         {
-            var mnistImageParser = new MnistImageCollection("MNIST\\t10k-images.idx3-ubyte");
-            List<byte[]> images = mnistImageParser.GetImages();
-
-            var mnistLabelParser = new MnistLabelCollection("MNIST\\t10k-labels.idx1-ubyte");
-            List<byte> labels = mnistLabelParser.GetLabels();
-
+            List<TrainingRecord> testSet = GetTrainingSet("MNIST\\t10k-images.idx3-ubyte", "MNIST\\t10k-labels.idx1-ubyte");
             int success = 0;
 
-            for (int i = 0; i < images.Count; i++)
+            for (int i = 0; i < testSet.Count; i++)
             {
-                double[] output = network.Predict(ConvertToInput(images[i]));
+                double[] output = network.Predict(testSet[i].Input);
                 int predictedDigit = Array.IndexOf(output, output.Max());
-                int actualDigit = labels[i];
+                int actualDigit = Array.IndexOf(testSet[i].Output, testSet[i].Output.Max());
 
                 if (predictedDigit == actualDigit)
                 {
@@ -74,7 +69,7 @@ namespace AutoEncoders.UI
                 }
             }
 
-            return (double) success/images.Count;
+            return (double) success/testSet.Count;
         }
 
         private double[] ConvertToInput(byte[] image)
